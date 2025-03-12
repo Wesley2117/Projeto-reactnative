@@ -1,30 +1,45 @@
-import { render } from '@testing-library/react-native'
-import App from '../../App'
+import { render, fireEvent, screen } from '@testing-library/react-native';
+import App from '../../App';
 
-it("test exemplo", () => {
+describe("App Component", () => {
+  it("should render the app component correctly", () => {
+    render(<App />);
 
-    const num1 = 40;
-    const num2 = 20;
-    const sum = num1 + num2;
+    //Verifica se o titulo "App contador" está presente
+    expect(screen.getByText("App contador")).toBeTruthy();
 
-    expect(1).toBe(1);
-    expect(sum).toBe(60)
-    
-})
-
-it("Test render App component", () => {
-    render(<App></App>)
-})
-
-const shoppingList = [
-    'fraldas',
-    'kleenex',
-    'sacos de lixo',
-    'papel toalha',
-    'leite',
-  ];
-  
-  test('a lista de compras tem leite nela', () => {
-    expect(shoppingList).toContain('leite');
-    expect(new Set(shoppingList)).toContain('leite');
+    // Verifica se o contador inicial é 0
+    expect(screen.getByTestId("counter").props.children).toBe(0);
   });
+
+  it("should decrement counter when the '-' vutton is pressed", () => {
+    render(<App />);
+
+    // Encontra o botão de decremento
+    const decrementButton = screen.getByText("-");
+
+    //Simular o clique no botão de decremento
+    fireEvent.press(decrementButton);
+
+    //Verificar se o contador foi decrementado para -1
+    expect(screen.getByTestId("counter").props.children).toBe(-1);
+  });
+
+  it("should increment and decrement counter correctly", () => {
+    render(<App />);
+
+    const incrementButton = screen.getByText("+");
+    const decrementButton = screen.getByText("-");
+
+    // Incrementa duas vezes
+    fireEvent.press(incrementButton);
+    fireEvent.press(incrementButton);
+    expect(screen.getByTestId("counter").props.children).toBe(2);
+
+    //Decrementando uma vez
+    fireEvent.press(decrementButton);
+    expect(screen.getByTestId("counter").props.children).toBe(1);
+
+  });
+
+});

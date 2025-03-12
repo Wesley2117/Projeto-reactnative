@@ -1,12 +1,28 @@
-
-import { StyleSheet, Text, View } from 'react-native';
+import { useState } from 'react'
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Title } from './src/Title'
 
 export default function App() {
+  const [counter, setCounter] = useState(0)
+
   return (
     <View style={styles.container}>
-      <Text>App  contador </Text>
-      <Text>App  contador </Text>
+
+      <Title title="Restaurante teste" />
+
       <Text style={styles.title}>App  contador </Text>
+
+      <View style={styles.counterArea}>
+        <TouchableOpacity onPress={() => setCounter(counter -  1)}>
+          <Text> - </Text>
+        </TouchableOpacity>
+
+        <Text testID="counter">{counter}</Text>
+
+        <TouchableOpacity onPress={() => setCounter(counter + 1)}>
+          <Text> + </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
@@ -22,5 +38,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginTop: 14,
     fontWeight: 'bold'
+  },
+  counterArea: {
+    flexDirection: 'row',
+    gap: 14,
+    marginTop: 14,
+    marginBottom: 14,
   }
 });
